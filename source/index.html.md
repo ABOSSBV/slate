@@ -3,12 +3,9 @@ title: API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
-  - ruby
-  - python
-  - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href='https://www.a-boss.net'>Sign Up for a Developer Key</a>
   - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
 
 includes:
@@ -19,80 +16,125 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
-
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
-This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Welcome to the A-BOSS API!
 
 # Authentication
 
-> To authorize, use this code:
+Send a post request to our authenticate url and receive your oauth token. This will be used in all future calls to our api.
 
-```ruby
-require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+
+> To authentication, use this code:
+
+```shell
+curl "http://api.a-boss.net/v1/authenticate.json"
+  -X POST
+  -H "Content-Type: application/json"
+  -d '{"user":"username", "password":"password"}'
 ```
+> The above command returns JSON structured like this:
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
+```json
+{
+  "token": "oauth_token"
+}
 ```
+# Profile
+
+The profile endpoint returns information about the current user along with the projects and agencies he has access to.
+
+
+### HTTP Request
+
+`GET http://api.a-boss.net/v1/profile.json`
+
+### URL Parameters
+
+None
+
+### Headers
+
+`Authorization: Bearer oauth_token`
+
+> To return the profile, use this code:
 
 ```shell
 # With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl "http://api.a-boss.net/v1/profile.json"
+  -H "Authorization: Bearer oauth_token"
 ```
 
-```javascript
-const kittn = require('kittn');
+> The above command returns JSON structured like this:
 
-let api = kittn.authorize('meowmeowmeow');
+```json
+{
+    "id": 1,
+    "email": "email",
+    "name": "name",
+    "avatar": "https://artist.a-boss.net/images/default_profile.png",
+    "projects": [
+        {
+            "id": 1,
+            "title": "ABOSS",
+            "project_code": "ABO"
+        }
+    ],
+    "agencies": [
+        {
+            "id": 2,
+            "title": "ABOSS Agency",
+            "projects": [
+                {
+                    "id": 2,
+                    "title": "ABOSS Agency Project",
+                    "project_code": "AAP"
+                }
+            ]
+        }
+    ]
+}
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Make sure to replace `oauth_token` with your API key.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>oauth_token</code> with your personal API key.
 </aside>
 
-# Kittens
+# Events
 
-## Get All Kittens
+## Project events
 
-```ruby
-require 'kittn'
+This endpoint retrieves all events within a certain range for an artist.
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
 
-```python
-import kittn
+### HTTP Request
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+`GET http://api.a-boss.net/v1/projects/<ID>/events.json`
+
+### URL Parameters
+
+Parameter | Example | Description
+--------- | ------- | -----------
+from | 2018-01-01 | Start of the time range for the events.
+to | 2018-12-31 | End of the time range for the events.
+limit | 50 | Number of events returned.
+page | 5 | The page number. We calculate the offset based on the limit param.
+
+If using only **from** parameter, the results will be sorted **ascending**.
+
+If using **to**, results will be **descending** so that past events can also be paginated starting at that date.
+
+### Headers
+
+`Authorization: Bearer oauth_token`
+
+> To return events for your project, use this code:
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+curl "http://api.a-boss.net/v1/projects/<ID>/events.json"
+  -H "Authorization: Bearer oauth_token"
 ```
 
 > The above command returns JSON structured like this:
@@ -101,139 +143,314 @@ let kittens = api.kittens.get();
 [
   {
     "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+    "project_id": 2,
+    "type": "event",
+    "title": "Concert",
+    "start": "2018-07-18T00:00:00.000+02:00",
+    "end": "2018-07-18T01:00:00.000+02:00",
+    "tba": true,
+    "allday": null,
+    "in_the_night": false,
+    "event_type": null,
+    "event_status": "option",
+    "description": null,
+    "event_website": null,
+    "info": null,
+    "location": {
+      "id": 1,
+      "title": "Royal Concertgebouw",
+      "country": "Netherlands",
+      "city": "Amsterdam",
+      "street": "Concertgebouwplein",
+      "home_number": "10",
+      "postal_code": "1071 LN",
+      "phone_number": "",
+      "website": "",
+      "region": "",
+      "lat": "52.35630920000001",
+      "lng": "4.879060400000071"
+    },
+    "availabilities": [],
+    "event_color": null,
+    "labels": [],
+    "ticket_sales": [],
+    "details": {
+      "general": {
+          "stage": null,
+          "capacity": null,
+          "timetable": null,
+          "press": null,
+          "set_recording": null
+      },
+      "deal": {
+          "fee": null,
+          "deal_percentage_artist": 0,
+          "deal_percentage_venue": 0,
+          "due_to_artist": 0,
+          "due_to_booker": 0,
+          "currency": "eur",
+          "items": []
+      },
+      "travel": [
+          {
+            "id": 2,
+            "event_type": "flight",
+            "title": "Flight",
+            "start": "2018-07-18T00:00:00.000+02:00",
+            "end": "2018-07-18T01:00:00.000+02:00",
+            "tba": false,
+            "allday": null,
+            "in_the_night": false
+          },
+          {
+            "id": 3,
+            "event_type": "hotel",
+            "title": "Hotel stay",
+            "start": "2018-07-18T00:00:00.000+02:00",
+            "end": "2018-07-18T01:00:00.000+02:00",
+            "tba": false,
+            "allday": null,
+            "in_the_night": false
+          },
+          {
+            "id": 4,
+            "event_type": "car",
+            "title": "Car ride",
+            "start": "2018-07-18T00:00:00.000+02:00",
+            "end": "2018-07-18T01:00:00.000+02:00",
+            "tba": false,
+            "allday": null,
+            "in_the_night": false
+          },
+          {
+            "id": 5,
+            "event_type": "train",
+            "title": "Train ride",
+            "start": "2018-07-18T00:00:00.000+02:00",
+            "end": "2018-07-18T01:00:00.000+02:00",
+            "tba": false,
+            "allday": null,
+            "in_the_night": false
+          }
+        ],
+        "advancing": {
+            "timeschedule": [],
+            "contacts": [],
+            "arrival": {
+                "navigation": {
+                    "street": null,
+                    "home_number": null,
+                    "postalcode": null,
+                    "city": null,
+                    "country": null
+                },
+                "route": null,
+                "parking": null,
+                "distance_parking_to_stage": null,
+                "load_in": null,
+                "catering": null,
+                "dressing_room": null
+            },
+            "technical": {
+                "technical": null,
+                "audio": null,
+                "light": null,
+                "video": null,
+                "sfx": null,
+                "backline": null,
+                "remarks": null
+            },
+            "other": {
+                "merchandise": null,
+                "clothing": null
+            }
+        },
+        "files": [
+            {
+                "id": 0,
+                "title": "Itinerary",
+                "file_size": null,
+                "url": ""
+            }
+        ],
+        "setlist": [],
+        "guestlist": []
+    }
   }
 ]
 ```
+## Agency Project events
 
-This endpoint retrieves all kittens.
+This endpoint retrieves all events within a certain range for an artist belonging to an agency.
+
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET http://api.a-boss.net/v1/agencies/<ID>/projects/<ID>/events.json`
 
-### Query Parameters
+### URL Parameters
 
-Parameter | Default | Description
+Parameter | Example | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+from | 2018-01-01 | Start of the time range for the events.
+to | 2018-12-31 | End of the time range for the events.
+limit | 50 | Number of events returned.
+page | 5 | The page number. We calculate the offset based on the limit param.
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
+If using only **from** parameter, the results will be sorted **ascending**.
 
-## Get a Specific Kitten
+If using **to**, results will be **descending** so that past events can also be paginated starting at that date.
 
-```ruby
-require 'kittn'
+### Headers
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+`Authorization: Bearer oauth_token`
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+> To return events for your project, use this code:
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+curl "http://api.a-boss.net/v1/agencies/<ID>/projects/<ID>/events.json"
+  -H "Authorization: Bearer oauth_token"
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
+[
+  {
+    "id": 1,
+    "project_id": 2,
+    "type": "event",
+    "title": "Concert",
+    "start": "2018-07-18T00:00:00.000+02:00",
+    "end": "2018-07-18T01:00:00.000+02:00",
+    "tba": true,
+    "allday": null,
+    "in_the_night": false,
+    "event_type": null,
+    "event_status": "option",
+    "description": null,
+    "event_website": null,
+    "info": null,
+    "location": {
+      "id": 1,
+      "title": "Royal Concertgebouw",
+      "country": "Netherlands",
+      "city": "Amsterdam",
+      "street": "Concertgebouwplein",
+      "home_number": "10",
+      "postal_code": "1071 LN",
+      "phone_number": "",
+      "website": "",
+      "region": "",
+      "lat": "52.35630920000001",
+      "lng": "4.879060400000071"
+    },
+    "availabilities": [],
+    "event_color": null,
+    "labels": [],
+    "ticket_sales": [],
+    "details": {
+      "general": {
+          "stage": null,
+          "capacity": null,
+          "timetable": null,
+          "press": null,
+          "set_recording": null
+      },
+      "deal": {
+          "fee": null,
+          "deal_percentage_artist": 0,
+          "deal_percentage_venue": 0,
+          "due_to_artist": 0,
+          "due_to_booker": 0,
+          "currency": "eur",
+          "items": []
+      },
+      "travel": [
+          {
+            "id": 2,
+            "event_type": "flight",
+            "title": "Flight",
+            "start": "2018-07-18T00:00:00.000+02:00",
+            "end": "2018-07-18T01:00:00.000+02:00",
+            "tba": false,
+            "allday": null,
+            "in_the_night": false
+          },
+          {
+            "id": 3,
+            "event_type": "hotel",
+            "title": "Hotel stay",
+            "start": "2018-07-18T00:00:00.000+02:00",
+            "end": "2018-07-18T01:00:00.000+02:00",
+            "tba": false,
+            "allday": null,
+            "in_the_night": false
+          },
+          {
+            "id": 4,
+            "event_type": "car",
+            "title": "Car ride",
+            "start": "2018-07-18T00:00:00.000+02:00",
+            "end": "2018-07-18T01:00:00.000+02:00",
+            "tba": false,
+            "allday": null,
+            "in_the_night": false
+          },
+          {
+            "id": 5,
+            "event_type": "train",
+            "title": "Train ride",
+            "start": "2018-07-18T00:00:00.000+02:00",
+            "end": "2018-07-18T01:00:00.000+02:00",
+            "tba": false,
+            "allday": null,
+            "in_the_night": false
+          }
+        ],
+        "advancing": {
+            "timeschedule": [],
+            "contacts": [],
+            "arrival": {
+                "navigation": {
+                    "street": null,
+                    "home_number": null,
+                    "postalcode": null,
+                    "city": null,
+                    "country": null
+                },
+                "route": null,
+                "parking": null,
+                "distance_parking_to_stage": null,
+                "load_in": null,
+                "catering": null,
+                "dressing_room": null
+            },
+            "technical": {
+                "technical": null,
+                "audio": null,
+                "light": null,
+                "video": null,
+                "sfx": null,
+                "backline": null,
+                "remarks": null
+            },
+            "other": {
+                "merchandise": null,
+                "clothing": null
+            }
+        },
+        "files": [
+            {
+                "id": 0,
+                "title": "Itinerary",
+                "file_size": null,
+                "url": ""
+            }
+        ],
+        "setlist": [],
+        "guestlist": []
+    }
+  }
+]
 ```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
-
-This endpoint deletes a specific kitten.
-
-### HTTP Request
-
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
-
