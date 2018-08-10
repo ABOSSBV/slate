@@ -222,30 +222,27 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
           </li>
           <li>
-            <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
-          </li>
-          <li>
-            <a href="#profile" class="toc-h1 toc-link" data-title="Profile">Profile</a>
+            <a href="#authorization" class="toc-h1 toc-link" data-title="Authorization">Authorization</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#http-request" class="toc-h2 toc-link" data-title="HTTP Request">HTTP Request</a>
+                    <a href="#oauth2-0" class="toc-h2 toc-link" data-title="OAuth2.0">OAuth2.0</a>
                   </li>
                   <li>
-                    <a href="#url-parameters" class="toc-h2 toc-link" data-title="URL Parameters">URL Parameters</a>
-                  </li>
-                  <li>
-                    <a href="#headers" class="toc-h2 toc-link" data-title="Headers">Headers</a>
+                    <a href="#request-the-authorization-token" class="toc-h2 toc-link" data-title="Request the authorization token">Request the authorization token</a>
                   </li>
               </ul>
           </li>
           <li>
-            <a href="#events" class="toc-h1 toc-link" data-title="Events">Events</a>
+            <a href="#aboss-endpoints" class="toc-h1 toc-link" data-title="ABOSS Endpoints">ABOSS Endpoints</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#project-events" class="toc-h2 toc-link" data-title="Project events">Project events</a>
+                    <a href="#profile" class="toc-h2 toc-link" data-title="Profile">Profile</a>
                   </li>
                   <li>
-                    <a href="#agency-project-events" class="toc-h2 toc-link" data-title="Agency Project events">Agency Project events</a>
+                    <a href="#aboss-artist-events" class="toc-h2 toc-link" data-title="ABOSS Artist - Events">ABOSS Artist - Events</a>
+                  </li>
+                  <li>
+                    <a href="#aboss-agency-events" class="toc-h2 toc-link" data-title="ABOSS Agency - Events">ABOSS Agency - Events</a>
                   </li>
               </ul>
           </li>
@@ -262,12 +259,21 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the A-BOSS API!</p>
-<h1 id='authentication'>Authentication</h1>
-<p>Send a post request to our authenticate url and receive your oauth token. This will be used in all future calls to our api.</p>
-
 <blockquote>
-<p>To authentication, use this code:</p>
+<p>API Endpoint</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>https://api.a-boss.net/v1/
+</code></pre>
+<p>ABOSS provides a simple and powerful REST API to integrate data from ABOSS into your business or application.</p>
+<h1 id='authorization'>Authorization</h1><h2 id='oauth2-0'>OAuth2.0</h2><pre class="highlight shell tab-shell"><code>curl https://api.a-boss.net/v1/profile.json <span class="se">\</span>
+    -H <span class="s2">"Authorization: Bearer abd90df5f27a7b170cd775abf89d632b350b7c1c9d53e08b340cd9832ce52c2c"</span>
+</code></pre>
+<p>OAuth2 is recommended when you’re creating an application for others on top of the ABOSS platform. This authentication provides a secure and easy to use authentication flow for users.</p>
+
+<p>OAuth2 requests must be authenticated with a valid access token passed as bearer token. To use the bearer token, construct a normal HTTPS request and include an Authorization header with the value of Bearer. Signing is not required.</p>
+<h2 id='request-the-authorization-token'>Request the authorization token</h2>
+<blockquote>
+<p>Example:</p>
 </blockquote>
 <pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.a-boss.net/v1/authenticate.json"</span>
   -X POST
@@ -275,29 +281,23 @@
   -d <span class="s1">'{"user":"username", "password":"password"}'</span>
 </code></pre>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above request returns a JSON response containing the authorization token:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oauth_token"</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre><h1 id='profile'>Profile</h1>
-<p>The profile endpoint returns information about the current user along with the projects and agencies he has access to.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://api.a-boss.net/v1/profile.json</code></p>
-<h3 id='url-parameters'>URL Parameters</h3>
-<p>None</p>
-<h3 id='headers'>Headers</h3>
-<p><code>Authorization: Bearer oauth_token</code></p>
-
+</span></code></pre>
+<p>To request the authorization token of the user, send a post request to our authenticate url containing both the email address as user and the password to receive the oAuth token as response. This token will be used in all future calls to our API.</p>
+<h1 id='aboss-endpoints'>ABOSS Endpoints</h1><h2 id='profile'>Profile</h2>
 <blockquote>
-<p>To return the profile, use this code:</p>
+<p>Example:</p>
 </blockquote>
 <pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
 curl <span class="s2">"http://api.a-boss.net/v1/profile.json"</span>
   -H <span class="s2">"Authorization: Bearer oauth_token"</span>
 </code></pre>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above request returns a JSON response containing the user information and his/her projects linked to their account:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
@@ -330,57 +330,26 @@ curl <span class="s2">"http://api.a-boss.net/v1/profile.json"</span>
 <p>Make sure to replace <code>oauth_token</code> with your API key.</p>
 </blockquote>
 
+<p>The profile endpoint returns information about the current user and the projects and agencies he has access to in ABOSS.</p>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>GET http://api.a-boss.net/v1/profile.json</code></p>
+<h3 id='url-parameters'>URL Parameters</h3>
+<p>None</p>
+<h3 id='headers'>Headers</h3>
+<p><code>Authorization: Bearer oauth_token</code></p>
+
 <aside class="notice">
 You must replace <code>oauth_token</code> with your personal API key.
 </aside>
-<h1 id='events'>Events</h1><h2 id='project-events'>Project events</h2>
-<p>This endpoint retrieves all events within a certain range for an artist.</p>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET http://api.a-boss.net/v1/projects/&lt;ID&gt;/events.json</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Example</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>from</td>
-<td>2018-01-01</td>
-<td>Start of the time range for the events.</td>
-</tr>
-<tr>
-<td>to</td>
-<td>2018-12-31</td>
-<td>End of the time range for the events.</td>
-</tr>
-<tr>
-<td>limit</td>
-<td>50</td>
-<td>Number of events returned.</td>
-</tr>
-<tr>
-<td>page</td>
-<td>5</td>
-<td>The page number. We calculate the offset based on the limit param.</td>
-</tr>
-</tbody></table>
-
-<p>If using only <strong>from</strong> parameter, the results will be sorted <strong>ascending</strong>.</p>
-
-<p>If using <strong>to</strong>, results will be <strong>descending</strong> so that past events can also be paginated starting at that date.</p>
-<h3 id='headers-2'>Headers</h3>
-<p><code>Authorization: Bearer oauth_token</code></p>
-
+<h2 id='aboss-artist-events'>ABOSS Artist - Events</h2>
 <blockquote>
-<p>To return events for your project, use this code:</p>
+<p>Example:</p>
 </blockquote>
 <pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.a-boss.net/v1/projects/&lt;ID&gt;/events.json"</span>
   -H <span class="s2">"Authorization: Bearer oauth_token"</span>
 </code></pre>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above request returns a JSON response:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
@@ -520,8 +489,200 @@ You must replace <code>oauth_token</code> with your personal API key.
     </span><span class="p">}</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
-</span></code></pre><h2 id='agency-project-events'>Agency Project events</h2>
-<p>This endpoint retrieves all events within a certain range for an artist belonging to an agency.</p>
+</span></code></pre>
+<p>This endpoint retrieves all events within a certain range for a project in an ABOSS Artist account.</p>
+<h3 id='http-request-2'>HTTP Request</h3>
+<p><code>GET http://api.a-boss.net/v1/projects/&lt;ID&gt;/events.json</code></p>
+<h3 id='url-parameters-2'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>from</td>
+<td>Date</td>
+<td>2018-01-01</td>
+<td>Start of the time range for the events.</td>
+</tr>
+<tr>
+<td>to</td>
+<td>Date</td>
+<td>2018-12-31</td>
+<td>End of the time range for the events.</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>integer</td>
+<td>50</td>
+<td>Number of events returned.</td>
+</tr>
+<tr>
+<td>page</td>
+<td>integer</td>
+<td>5</td>
+<td>The page number. We calculate the offset based on the limit param.</td>
+</tr>
+</tbody></table>
+
+<p>If using only <strong>from</strong> parameter, the results will be sorted <strong>ascending</strong>.</p>
+
+<p>If using <strong>to</strong>, results will be <strong>descending</strong> so that past events can also be paginated starting at that date.</p>
+<h3 id='headers-2'>Headers</h3>
+<p><code>Authorization: Bearer oauth_token</code></p>
+<h2 id='aboss-agency-events'>ABOSS Agency - Events</h2>
+<blockquote>
+<p>Example:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.a-boss.net/v1/agencies/&lt;ID&gt;/projects/&lt;ID&gt;/events.json"</span>
+  -H <span class="s2">"Authorization: Bearer oauth_token"</span>
+</code></pre>
+<blockquote>
+<p>The above request returns a JSON response:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"project_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"event"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Concert"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T00:00:00.000+02:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T01:00:00.000+02:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"tba"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"allday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"in_the_night"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"event_status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"option"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"event_website"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"info"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"location"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Royal Concertgebouw"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Netherlands"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Amsterdam"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Concertgebouwplein"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"home_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"postal_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1071 LN"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"phone_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"website"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"region"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"lat"</span><span class="p">:</span><span class="w"> </span><span class="s2">"52.35630920000001"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"lng"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4.879060400000071"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"availabilities"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="s2">"event_color"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="s2">"ticket_sales"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="s2">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"general"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"stage"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"capacity"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"timetable"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"press"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"set_recording"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"deal"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"fee"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"deal_percentage_artist"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"deal_percentage_venue"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"due_to_artist"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"due_to_booker"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eur"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"travel"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"flight"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Flight"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T00:00:00.000+02:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T01:00:00.000+02:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"tba"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"allday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"in_the_night"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hotel"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Hotel stay"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T00:00:00.000+02:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T01:00:00.000+02:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"tba"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"allday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"in_the_night"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"car"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Car ride"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T00:00:00.000+02:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T01:00:00.000+02:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"tba"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"allday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"in_the_night"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"train"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Train ride"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T00:00:00.000+02:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T01:00:00.000+02:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"tba"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"allday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"in_the_night"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"advancing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"timeschedule"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+            </span><span class="s2">"contacts"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+            </span><span class="s2">"arrival"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"navigation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"home_number"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"postalcode"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"route"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"parking"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"distance_parking_to_stage"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"load_in"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"catering"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"dressing_room"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"technical"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"technical"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"audio"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"light"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"video"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"sfx"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"backline"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"remarks"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"other"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"merchandise"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"clothing"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"files"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Itinerary"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"file_size"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"setlist"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="s2">"guestlist"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This endpoint retrieves all events within a certain range for a project in an ABOSS Agency account.</p>
 <h3 id='http-request-3'>HTTP Request</h3>
 <p><code>GET http://api.a-boss.net/v1/agencies/&lt;ID&gt;/projects/&lt;ID&gt;/events.json</code></p>
 <h3 id='url-parameters-3'>URL Parameters</h3>
@@ -559,155 +720,7 @@ You must replace <code>oauth_token</code> with your personal API key.
 <p>If using <strong>to</strong>, results will be <strong>descending</strong> so that past events can also be paginated starting at that date.</p>
 <h3 id='headers-3'>Headers</h3>
 <p><code>Authorization: Bearer oauth_token</code></p>
-
-<blockquote>
-<p>To return events for your project, use this code:</p>
-</blockquote>
-<pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.a-boss.net/v1/agencies/&lt;ID&gt;/projects/&lt;ID&gt;/events.json"</span>
-  -H <span class="s2">"Authorization: Bearer oauth_token"</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"project_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"event"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Concert"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T00:00:00.000+02:00"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T01:00:00.000+02:00"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"tba"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"allday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"in_the_night"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"event_status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"option"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"event_website"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"info"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"location"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Royal Concertgebouw"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Netherlands"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Amsterdam"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Concertgebouwplein"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"home_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"postal_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1071 LN"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"phone_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"website"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"region"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"lat"</span><span class="p">:</span><span class="w"> </span><span class="s2">"52.35630920000001"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"lng"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4.879060400000071"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"availabilities"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-    </span><span class="s2">"event_color"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-    </span><span class="s2">"ticket_sales"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-    </span><span class="s2">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"general"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="s2">"stage"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"capacity"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"timetable"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"press"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"set_recording"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="s2">"deal"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="s2">"fee"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"deal_percentage_artist"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"deal_percentage_venue"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"due_to_artist"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"due_to_booker"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eur"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="s2">"travel"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-          </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"flight"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Flight"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T00:00:00.000+02:00"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T01:00:00.000+02:00"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"tba"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"allday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"in_the_night"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-          </span><span class="p">},</span><span class="w">
-          </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hotel"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Hotel stay"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T00:00:00.000+02:00"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T01:00:00.000+02:00"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"tba"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"allday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"in_the_night"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-          </span><span class="p">},</span><span class="w">
-          </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"car"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Car ride"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T00:00:00.000+02:00"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T01:00:00.000+02:00"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"tba"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"allday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"in_the_night"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-          </span><span class="p">},</span><span class="w">
-          </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"train"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Train ride"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T00:00:00.000+02:00"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-07-18T01:00:00.000+02:00"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"tba"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"allday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"in_the_night"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-          </span><span class="p">}</span><span class="w">
-        </span><span class="p">],</span><span class="w">
-        </span><span class="s2">"advancing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"timeschedule"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-            </span><span class="s2">"contacts"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-            </span><span class="s2">"arrival"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"navigation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"home_number"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"postalcode"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
-                </span><span class="p">},</span><span class="w">
-                </span><span class="s2">"route"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"parking"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"distance_parking_to_stage"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"load_in"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"catering"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"dressing_room"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="s2">"technical"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"technical"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"audio"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"light"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"video"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"sfx"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"backline"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"remarks"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="s2">"other"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"merchandise"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"clothing"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">},</span><span class="w">
-        </span><span class="s2">"files"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Itinerary"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"file_size"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">],</span><span class="w">
-        </span><span class="s2">"setlist"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-        </span><span class="s2">"guestlist"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre><h1 id='errors'>Errors</h1>
+<h1 id='errors'>Errors</h1>
 <p>The ABOSS API uses the following error codes:</p>
 
 <table><thead>
