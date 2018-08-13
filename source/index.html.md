@@ -5,8 +5,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
   - shell
 
 toc_footers:
-  - <a href='https://www.a-boss.net'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
+  - Copyright 2018 ABOSS B.V.
 
 includes:
   - errors
@@ -16,7 +15,6 @@ search: true
 
 # Introduction
 
-
 > API Endpoint
 
 ```shell
@@ -24,6 +22,10 @@ https://api.a-boss.net/v1/
 ```
 
 ABOSS provides a simple and powerful REST API to integrate data from ABOSS into your business or application.
+
+## Agency & Artist
+
+ABOSS is a single platform with both ABOSS Agency and ABOSS Artist available. Some requests can send different information depending on if it's coming from ABOSS Agency or ABOSS Artist. In these cases we have two calls available; agency & artist.
 
 # Authorization
 
@@ -58,7 +60,7 @@ curl "http://api.a-boss.net/v1/authenticate.json"
 
 To request the authorization token of the user, send a post request to our authenticate url containing both the email address as user and the password to receive the oAuth token as response. This token will be used in all future calls to our API.
 
-# ABOSS Endpoints
+# Endpoints
 
 ## Profile
 
@@ -122,7 +124,7 @@ None
 You must replace <code>oauth_token</code> with your personal API key.
 </aside>
 
-## ABOSS Artist - Events
+## Events (Artist)
 
 > Example:
 
@@ -296,7 +298,7 @@ If using **to**, results will be **descending** so that past events can also be 
 ### Headers
 
 `Authorization: Bearer oauth_token`
-## ABOSS Agency - Events
+## Events (Agency)
 
 > Example:
 
