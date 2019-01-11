@@ -220,6 +220,11 @@
       <ul id="toc" class="toc-list-h1">
           <li>
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#agency-amp-artist" class="toc-h2 toc-link" data-title="Agency &amp; Artist">Agency &amp; Artist</a>
+                  </li>
+              </ul>
           </li>
           <li>
             <a href="#authorization" class="toc-h1 toc-link" data-title="Authorization">Authorization</a>
@@ -233,26 +238,25 @@
               </ul>
           </li>
           <li>
-            <a href="#aboss-endpoints" class="toc-h1 toc-link" data-title="ABOSS Endpoints">ABOSS Endpoints</a>
+            <a href="#endpoints" class="toc-h1 toc-link" data-title="Endpoints">Endpoints</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#profile" class="toc-h2 toc-link" data-title="Profile">Profile</a>
                   </li>
                   <li>
-                    <a href="#aboss-artist-events" class="toc-h2 toc-link" data-title="ABOSS Artist - Events">ABOSS Artist - Events</a>
+                    <a href="#events-artist" class="toc-h2 toc-link" data-title="Events (Artist)">Events (Artist)</a>
                   </li>
                   <li>
-                    <a href="#aboss-agency-events" class="toc-h2 toc-link" data-title="ABOSS Agency - Events">ABOSS Agency - Events</a>
+                    <a href="#events-agency" class="toc-h2 toc-link" data-title="Events (Agency)">Events (Agency)</a>
                   </li>
               </ul>
           </li>
           <li>
-            <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
+            <a href="#error-codes" class="toc-h1 toc-link" data-title="Error Codes">Error Codes</a>
           </li>
       </ul>
         <ul class="toc-footer">
-            <li><a href='https://www.a-boss.net'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/lord/slate'>Documentation Powered by Slate</a></li>
+            <li>Copyright 2018 ABOSS B.V.</li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -265,6 +269,8 @@
 <pre class="highlight shell tab-shell"><code>https://api.a-boss.net/v1/
 </code></pre>
 <p>ABOSS provides a simple and powerful REST API to integrate data from ABOSS into your business or application.</p>
+<h2 id='agency-amp-artist'>Agency &amp; Artist</h2>
+<p>ABOSS is a single platform with both ABOSS Agency and ABOSS Artist available. Some requests can send different information depending on if it&#39;s coming from ABOSS Agency or ABOSS Artist. In these cases we have two calls available; agency &amp; artist.</p>
 <h1 id='authorization'>Authorization</h1><h2 id='oauth2-0'>OAuth2.0</h2><pre class="highlight shell tab-shell"><code>curl https://api.a-boss.net/v1/profile.json <span class="se">\</span>
     -H <span class="s2">"Authorization: Bearer abd90df5f27a7b170cd775abf89d632b350b7c1c9d53e08b340cd9832ce52c2c"</span>
 </code></pre>
@@ -288,7 +294,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>To request the authorization token of the user, send a post request to our authenticate url containing both the email address as user and the password to receive the oAuth token as response. This token will be used in all future calls to our API.</p>
-<h1 id='aboss-endpoints'>ABOSS Endpoints</h1><h2 id='profile'>Profile</h2>
+<h1 id='endpoints'>Endpoints</h1><h2 id='profile'>Profile</h2>
 <blockquote>
 <p>Example:</p>
 </blockquote>
@@ -341,7 +347,7 @@ curl <span class="s2">"http://api.a-boss.net/v1/profile.json"</span>
 <aside class="notice">
 You must replace <code>oauth_token</code> with your personal API key.
 </aside>
-<h2 id='aboss-artist-events'>ABOSS Artist - Events</h2>
+<h2 id='events-artist'>Events (Artist)</h2>
 <blockquote>
 <p>Example:</p>
 </blockquote>
@@ -533,7 +539,7 @@ You must replace <code>oauth_token</code> with your personal API key.
 <p>If using <strong>to</strong>, results will be <strong>descending</strong> so that past events can also be paginated starting at that date.</p>
 <h3 id='headers-2'>Headers</h3>
 <p><code>Authorization: Bearer oauth_token</code></p>
-<h2 id='aboss-agency-events'>ABOSS Agency - Events</h2>
+<h2 id='events-agency'>Events (Agency)</h2>
 <blockquote>
 <p>Example:</p>
 </blockquote>
@@ -720,38 +726,45 @@ You must replace <code>oauth_token</code> with your personal API key.
 <p>If using <strong>to</strong>, results will be <strong>descending</strong> so that past events can also be paginated starting at that date.</p>
 <h3 id='headers-3'>Headers</h3>
 <p><code>Authorization: Bearer oauth_token</code></p>
-<h1 id='errors'>Errors</h1>
+<h1 id='error-codes'>Error Codes</h1>
 <p>The ABOSS API uses the following error codes:</p>
 
 <table><thead>
 <tr>
 <th>Error Code</th>
-<th>Meaning</th>
+<th>Message</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>400</td>
-<td>Bad Request -- Your request is invalid.</td>
+<td>Bad Request</td>
+<td>Your request is invalid.</td>
 </tr>
 <tr>
 <td>401</td>
-<td>Unauthorized -- Your API key is wrong.</td>
+<td>Unauthorized</td>
+<td>Your API key is wrong.</td>
 </tr>
 <tr>
 <td>403</td>
-<td>Forbidden -- The user making the requests does not have access to the resource.</td>
+<td>Forbidden</td>
+<td>The user making the requests does not have access to the resource.</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found -- The specified resource could not be found.</td>
+<td>Not Found</td>
+<td>The specified resource could not be found.</td>
 </tr>
 <tr>
 <td>500</td>
-<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
+<td>Internal Server Error</td>
+<td>The request encoutered an internal server error. Please try again later.</td>
 </tr>
 <tr>
 <td>503</td>
-<td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
+<td>Service Unavailable</td>
+<td>We&#39;re temporarily offline for maintenance. Please try again later.</td>
 </tr>
 </tbody></table>
 
